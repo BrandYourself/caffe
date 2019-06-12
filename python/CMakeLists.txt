@@ -13,8 +13,10 @@ target_link_libraries(pycaffe PUBLIC ${Caffe_LINK} ${PYTHON_LIBRARIES})
 
 if(UNIX OR APPLE)
     set(__linkname "${PROJECT_SOURCE_DIR}/python/caffe/_caffe.so")
+    set(__sourcename "../../build/lib/_caffe${Caffe_POSTFIX}.so")
     add_custom_command(TARGET pycaffe POST_BUILD
-                       COMMAND ln -sf $<TARGET_LINKER_FILE:pycaffe> "${__linkname}"
+                       # COMMAND ln -sf $<TARGET_LINKER_FILE:pycaffe> "${__linkname}"
+                       COMMAND ln -sf "${__sourcename}" "${__linkname}"
                        COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/python/caffe/proto
                        COMMAND touch ${PROJECT_SOURCE_DIR}/python/caffe/proto/__init__.py
                        COMMAND cp ${proto_gen_folder}/*.py ${PROJECT_SOURCE_DIR}/python/caffe/proto/
